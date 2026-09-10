@@ -12,7 +12,7 @@ public class UserDTO {
 
     private String password;
 
-    private String token;
+    private String accessToken;
 
     private String role;
 
@@ -41,10 +41,10 @@ public class UserDTO {
     }
 
     public String getToken() {
-        return token;
+        return accessToken;
     }
 
     public void setToken(String token) {
-        this.token = token;
+        this.accessToken = token;
     }
 }

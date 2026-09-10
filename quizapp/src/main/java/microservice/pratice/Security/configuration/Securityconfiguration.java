@@ -41,7 +41,9 @@ public class Securityconfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity security){
         return security
                 .authorizeHttpRequests(auth-> auth
-                        .requestMatchers("/api/v1/user/register","/api/v1/user/login","/error")
+                        .requestMatchers("/api/v1/user/register",
+                                "/api/v1/user/refresh"
+                                ,"/api/v1/user/login","/error")
                         .permitAll()
                         .requestMatchers("/api/v1/admin/**","/errors")
                         .hasAuthority("ADMIN")

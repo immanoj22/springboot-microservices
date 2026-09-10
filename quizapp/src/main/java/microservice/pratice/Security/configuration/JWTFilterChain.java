@@ -46,9 +46,15 @@ public class JWTFilterChain extends OncePerRequestFilter {
             token = authHeader.substring(7);
             try {
                 email = jwtService.extractEmail(token);
+
+                if (jwtService.isTokenExpired(token)) {   // <-- add explicit check here
+                    writeErrorResponse(response, HttpStatus.UNAUTHORIZED, "Session expired");
+                    return;
+                }
+
             } catch (ExpiredJwtException ex) {
-                writeErrorResponse(response, HttpStatus.FORBIDDEN, "Session expired");
-                return; // stop the filter chain here — do not call filterChain.doFilter()
+                writeErrorResponse(response, HttpStatus.UNAUTHORIZED, "Session expired");
+                return;
             } catch (JwtException ex) {
                 writeErrorResponse(response, HttpStatus.UNAUTHORIZED, "Invalid token");
                 return;
@@ -82,5 +88,14 @@ public class JWTFilterChain extends OncePerRequestFilter {
         response.setStatus(status.value());
         response.setContentType("application/json");
         response.getWriter().write(objectMapper.writeValueAsString(sendResponse));
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+        return path.equals("/api/v1/user/register")
+                || path.equals("/api/v1/user/refresh")
+                || path.equals("/api/v1/user/login")
+                || path.equals("/error");
     }
 }

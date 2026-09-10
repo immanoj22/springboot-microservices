@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
@@ -15,15 +14,13 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Integer userId;
+    private Integer userId;
 
-    String email;
+    private String email;
 
-    String password;
+    private String password;
 
-    String role;
-
-    String RefreshToken;
+    private String role;
 
     public String getEmail() {
         return email;
@@ -49,11 +46,4 @@ public class User {
         this.role = role;
     }
 
-    public String getRefreshToken() {
-        return RefreshToken;
-    }
-
-    public void setRefreshToken(String refreshToken) {
-        RefreshToken = refreshToken;
-    }
 }

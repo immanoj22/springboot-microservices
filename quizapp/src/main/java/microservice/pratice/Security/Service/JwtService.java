@@ -1,6 +1,7 @@
 package microservice.pratice.Security.Service;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -29,8 +30,24 @@ public class JwtService {
 //        int days = 10;
 //        Date futureDate = new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * days);
 
+        Date futureDate = new Date(System.currentTimeMillis() + 1000L * 60 * 10); // 1 minute
 
-        Date futureDate = new Date(System.currentTimeMillis() + 1000L * 60 * 1); // 1 minute
+
+        return Jwts
+                .builder()
+                .claims(claims)
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(futureDate)
+                .signWith(getKey())
+                .compact();
+    }
+
+    public String genrateAccessToken(User requester) {
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("email",requester.getEmail());
+
+        Date futureDate = new Date(System.currentTimeMillis() + 1000L * 60 * 10); // 1 minute
 
         return Jwts
                 .builder()
@@ -48,17 +65,28 @@ public class JwtService {
 
     // --- parsing helpers ---
 
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser()
-                .verifyWith((javax.crypto.SecretKey) getKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
-    }
-
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
+    }
+
+    private Claims extractAllClaims(String token) {
+        try {
+            return Jwts.parser()
+                    .verifyWith((javax.crypto.SecretKey) getKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+        } catch (ExpiredJwtException e) {
+            // Claims are still available on the exception even though token is expired
+            return e.getClaims();
+        }
+
+//        return Jwts.parser()
+//                .verifyWith((javax.crypto.SecretKey) getKey())
+//                .build()
+//                .parseSignedClaims(token)
+//                .getPayload();
     }
 
     public String extractEmail(String token) {
@@ -68,7 +96,7 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
