@@ -1,26 +1,36 @@
 package microservice.pratice.Quiz.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
 public class QuizCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer question_id;
+    private Integer questionCategory_id;
 
     private String category;
 
 
     @ManyToOne
     @JoinColumn(name = "quiz_question_id")
+    @JsonBackReference
     private QuizQuestion quizQuestion;
 
-    public Integer getQuestion_id() {
-        return question_id;
+    public Integer getQuestionCategory_id() {
+        return questionCategory_id;
     }
 
-    public void setQuestion_id(Integer question_id) {
-        this.question_id = question_id;
+    public void setQuestionCategory_id(Integer questionCategory_id) {
+        this.questionCategory_id = questionCategory_id;
+    }
+
+    public QuizQuestion getQuizQuestion() {
+        return quizQuestion;
+    }
+
+    public void setQuizQuestion(QuizQuestion quizQuestion) {
+        this.quizQuestion = quizQuestion;
     }
 
     public String getCategory() {

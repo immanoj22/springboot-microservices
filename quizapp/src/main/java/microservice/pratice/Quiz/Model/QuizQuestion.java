@@ -1,8 +1,11 @@
 package microservice.pratice.Quiz.Model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class QuizQuestion {
@@ -14,10 +17,12 @@ public class QuizQuestion {
     private String quizQuestion;
 
     @OneToMany(mappedBy = "quizQuestion", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<QuizCategory> category;
+    @JsonManagedReference
+    private Set<QuizCategory> category = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "quizQuestion", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<QuizAnswer> answers;
+    @JsonManagedReference
+    private Set<QuizAnswer> answers = new LinkedHashSet<>();
 
 
     public String getQuizQuestion() {
@@ -28,19 +33,19 @@ public class QuizQuestion {
         this.quizQuestion = quizQuestion;
     }
 
-    public List<QuizCategory> getCategory() {
+    public Set<QuizCategory> getCategory() {
         return category;
     }
 
-    public void setCategory(List<QuizCategory> category) {
+    public void setCategory(Set<QuizCategory> category) {
         this.category = category;
     }
 
-    public List<QuizAnswer> getAnswers() {
+    public Set<QuizAnswer> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(List<QuizAnswer> answers) {
+    public void setAnswers(Set<QuizAnswer> answers) {
         this.answers = answers;
     }
 

@@ -18,7 +18,25 @@ public class QuizController {
     @PostMapping()
     public ResponseEntity<SendResponse> addQuiz(@RequestBody QuizDTO quizDTO){
         SendResponse sendResponse=new SendResponse<QuizDTO>();
-        quizService.addQuestion(quizDTO);
-        return new ResponseEntity<>(sendResponse, HttpStatus.CREATED);
+        sendResponse.setData(quizService.addQuestion(quizDTO));
+        sendResponse.setMessage("Question added succesfully");
+        sendResponse.setStatusCode(HttpStatus.CREATED);
+        return new ResponseEntity<>(sendResponse,sendResponse.getStatusCode() );
+    }
+
+    @GetMapping
+    public ResponseEntity<SendResponse> getDetails(){
+        SendResponse sendResponse=new SendResponse<>();
+        sendResponse.setData(quizService.getDetails());
+        sendResponse.setStatusCode(HttpStatus.OK);
+        return new ResponseEntity<>(sendResponse,sendResponse.getStatusCode());
+    }
+
+    @GetMapping("/{category}")
+    public ResponseEntity<SendResponse> getByCategory(@PathVariable("category") String category){
+        SendResponse sendResponse=new SendResponse<>();
+        sendResponse.setData(quizService.getDetailsByCategory(category));
+        sendResponse.setStatusCode(HttpStatus.OK);
+        return new ResponseEntity<>(sendResponse,sendResponse.getStatusCode());
     }
 }
