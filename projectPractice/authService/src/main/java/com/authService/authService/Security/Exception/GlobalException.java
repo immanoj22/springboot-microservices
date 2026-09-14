@@ -1,14 +1,12 @@
-package microservice.pratice.Security.Exception;
+package com.authService.authService.Security.Exception;
 
-import microservice.pratice.Quiz.Exception.QuizNotHasenough;
-import microservice.pratice.User.Exception.UserAlreadyExists;
-import microservice.pratice.User.Exception.UserNotFoundException;
-import microservice.pratice.User.Exception.UsernameNotExist;
-import microservice.pratice.Utils.SendResponse;
+import com.authService.authService.User.Exception.UserAlreadyExists;
+import com.authService.authService.User.Exception.UserNotFoundException;
+import com.authService.authService.User.Exception.UsernameNotExist;
+import com.authService.authService.Utils.SendResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
@@ -62,15 +60,4 @@ public class GlobalException {
         return new ResponseEntity<>(sendResponse, sendResponse.getStatusCode());
     }
 
-    @ExceptionHandler(QuizNotHasenough.class)
-    public ResponseEntity<SendResponse> expired(QuizNotHasenough quizNotHasenough){
-        String message=quizNotHasenough.getMessage();
-
-        SendResponse sendResponse=new SendResponse<>();
-        sendResponse.setStatus(false);
-        sendResponse.setMessage(message);
-        sendResponse.setStatusCode(HttpStatus.CONTENT_TOO_LARGE);
-
-        return new ResponseEntity<>(sendResponse, sendResponse.getStatusCode());
-    }
 }

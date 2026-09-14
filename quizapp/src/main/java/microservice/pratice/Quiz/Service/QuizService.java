@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -42,8 +43,8 @@ public class QuizService {
 
     public Object getDetailsByCategory(String category) {
         System.out.println("category"+category);
-        List<QuizCategory> quizCategories=quizCategoryRepository.findAllDetailsByCategory(category);
-        System.out.println("### Found " + quizCategories.size() + " categories for input: [" + category + "]");
-        return quizCategories;
+        List<QuizQuestion> quizQuestions=quizQuestionRepository.findWithCategory(category);
+
+        return quizQuestions;
     }
 }

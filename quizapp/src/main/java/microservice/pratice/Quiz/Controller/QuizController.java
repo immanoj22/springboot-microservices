@@ -1,4 +1,4 @@
-package microservice.pratice.Quiz.Controller;
+package microservice.pratice.Quiz.controller;
 
 import microservice.pratice.Quiz.Model.DTO.QuizDTO;
 import microservice.pratice.Quiz.Service.QuizService;
