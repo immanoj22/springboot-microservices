@@ -26,6 +26,24 @@ Java 17, Spring Boot, Spring Security, Spring Data JPA, Spring Cloud (Eureka, Ga
 
 The gateway talks to the other services through Eureka (`lb://` routes). The services use the public key to check tokens. I did not find any service calling another over REST or Feign in the code, and there is no Kafka.
 
+## Architecture
+
+```mermaid
+flowchart LR
+    C[Client] --> G[API gateway :8081]
+    G -->|checks JWT with public key| G
+    G -->|/authservice/**| A[authService :8083]
+    G -->|/user-service/**| U[user-service :8082]
+    G -. finds services .-> E[Eureka registry :8761]
+    A -. registers .-> E
+    U -. registers .-> E
+    A --> DB[(PostgreSQL UserDB)]
+    U --> DB
+    Q[quizapp :8080] --> QDB[(PostgreSQL Manoj)]
+```
+
+authService signs tokens with an RSA private key. The gateway and the other services only hold the public key.
+
 ## Running it locally
 
 Needs JDK 17 and PostgreSQL. Each service has its own Maven wrapper.
