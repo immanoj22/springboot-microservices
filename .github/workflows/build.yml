@@ -1,0 +1,14 @@
+name: build
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [projectPractice/service-registry, projectPractice/apiGateway, projectPractice/authService, projectPractice/user-service, quizapp]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '17', cache: maven }
+      - run: mvn -B -DskipTests package
+        working-directory: ${{ matrix.service }}
