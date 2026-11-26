@@ -79,3 +79,5 @@ quizapp:
 ## Notes
 
 This is practice code. There are no real tests beyond the generated context tests, and the same security and utility classes are copied between services instead of shared.
+
+Database and token settings come from the environment: `DB_PASSWORD`, `JWT_SECRET`, `JWT_PRIVATE_KEY` and `JWT_PUBLIC_KEY`.
