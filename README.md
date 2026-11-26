@@ -1,5 +1,7 @@
 # Spring Boot Microservices
 
+[![build](https://github.com/immanoj22/springboot-microservices/actions/workflows/build.yml/badge.svg)](https://github.com/immanoj22/springboot-microservices/actions/workflows/build.yml)
+
 This repo holds my microservice practice work. There are two parts: `quizapp`, a single Spring Boot app with JWT login and a quiz API, and `projectPractice`, where I split a user system into separate services behind a gateway with Eureka for discovery.
 
 ## Features
